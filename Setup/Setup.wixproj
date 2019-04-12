@@ -24,7 +24,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <SuppressIces>ICE61;ICE80;ICE91;ICE38</SuppressIces>
-    <DefineConstants>Version=3.0 Alastri Edition;NumericVersion=3.0.3</DefineConstants>
+    <DefineConstants>Version=3.0.3;NumericVersion=3.0.3</DefineConstants>
     <!--
     <DefineConstants>Version=$(Version);NumericVersion=$(NumericVersion);PluginManagerSourceDir=..\Plugins\GitExtensions.PluginManager\Output</DefineConstants>
     -->
