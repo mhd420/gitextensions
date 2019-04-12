@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using GitCommands.Settings;
@@ -1344,6 +1345,24 @@ namespace GitCommands
             set => SetBool("RememberNumberOfContextLines", value);
         }
 
+        public static string AlastriJiraURL
+        {
+            get => GetString("AlastriJiraURL", "https://alastri.atlassian.net/");
+            set => SetString("AlastriJiraURL", value);
+        }
+
+        public static string AlastriJiraUsername
+        {
+            get => GetString("AlastriJiraUsername", null);
+            set => SetString("AlastriJiraUsername", value);
+        }
+
+        public static string AlastriJiraPassword
+        {
+            get => GetEncryptedString("AlastriJiraPassword");
+            set => SetEncryptedString("AlastriJiraPassword", value);
+        }
+
         public static string GetDictionaryDir()
         {
             return Path.Combine(GetResourceDir(), "Dictionaries");
@@ -1695,6 +1714,33 @@ namespace GitCommands
         public static string GetString(string name, string defaultValue)
         {
             return SettingsContainer.GetString(name, defaultValue);
+        }
+
+        public static void SetEncryptedString(string name, string value)
+        {
+            var entropy = new byte[] { 0xc3, 0xb4, 0x6a, 0x2d, 0x66, 0x0a, 0x80, 0xd9, 0x0d, 0xf1 };
+            var dataBytes = Encoding.UTF8.GetBytes(value);
+
+            var encBytes = ProtectedData.Protect(dataBytes, entropy, DataProtectionScope.LocalMachine);
+
+            SettingsContainer.SetString(name, Convert.ToBase64String(encBytes));
+        }
+
+        public static string GetEncryptedString(string name)
+        {
+            var data = SettingsContainer.GetString(name, null);
+
+            if (data == null)
+            {
+                return null;
+            }
+
+            var entropy = new byte[] { 0xc3, 0xb4, 0x6a, 0x2d, 0x66, 0x0a, 0x80, 0xd9, 0x0d, 0xf1 };
+            var dataBytes = Convert.FromBase64String(data);
+
+            var decBytes = ProtectedData.Unprotect(dataBytes, entropy, DataProtectionScope.LocalMachine);
+
+            return Encoding.UTF8.GetString(decBytes);
         }
 
         private static void LoadEncodings()

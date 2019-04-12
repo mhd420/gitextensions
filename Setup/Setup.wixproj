@@ -24,7 +24,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <SuppressIces>ICE61;ICE80;ICE91;ICE38</SuppressIces>
-    <DefineConstants>Version=$(Version);NumericVersion=$(NumericVersion)</DefineConstants>
+    <DefineConstants>Version=3.0 Alastri Edition;NumericVersion=3.0.3</DefineConstants>
     <!--
     <DefineConstants>Version=$(Version);NumericVersion=$(NumericVersion);PluginManagerSourceDir=..\Plugins\GitExtensions.PluginManager\Output</DefineConstants>
     -->
@@ -95,8 +95,7 @@
     <Error Condition="!Exists('..\packages\WiX.3.11.0\build\wix.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WiX.3.11.0\build\wix.props'))" />
   </Target>
   <Target Name="BeforeBuild">
-    <Exec Command="
-	call BuildGitExtNative.cmd $(Configuration) build">
+    <Exec Command="&#xD;&#xA;	call BuildGitExtNative.cmd $(Configuration) build">
     </Exec>
   </Target>
   <!--

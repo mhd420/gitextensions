@@ -98,6 +98,9 @@ namespace GitUI.CommandsDialogs
             settingsTreeView.AddSettingsPage(sshSettingsPage, gitExtPageRef, Images.Key);
             checklistSettingsPage.SshSettingsPage = sshSettingsPage;
 
+            var alastriSettingsPage = SettingsPageBase.Create<AlastriSettingsPage>(this);
+            settingsTreeView.AddSettingsPage(alastriSettingsPage, gitExtPageRef, Images.DollarSign);
+
             // Git settings
             settingsTreeView.AddSettingsPage(new GitSettingsGroup(), null, Images.GitLogo16);
             var gitPageRef = GitSettingsGroup.GetPageReference();

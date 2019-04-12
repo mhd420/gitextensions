@@ -1654,6 +1654,8 @@ namespace GitUI
 
             SetEnabled(openBuildReportToolStripMenuItem, !string.IsNullOrWhiteSpace(revision.BuildStatus?.Url));
 
+            AlastriIntegration.CreateReleaseNoteSubMenu(this, UICommands, mainContextMenu, revision, gitRefListsForRevision);
+
             RefreshOwnScripts();
 
             UpdateSeparators();
