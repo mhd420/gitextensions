@@ -100,7 +100,9 @@ namespace GitUI
 
         private static void ViewReleaseNote(string ticketId)
         {
-            Process.Start($"https://alastri.atlassian.net/browse/RN-{ticketId}");
+            var url = new Uri(new Uri(AppSettings.AlastriJiraURL), $"/browse/RN-{ticketId}");
+
+            Process.Start(url.ToString());
         }
 
         private static void CopyReleaseNote(string noteTagName)
@@ -116,6 +118,8 @@ namespace GitUI
                 {
                     var numberMatch = Regex.Match(newTicketForm.JiraTicket, @"[A-Z]{1,10}-(\d+)");
                     var ticketId = numberMatch.Groups[1].Value;
+
+                    ViewReleaseNote(ticketId);
 
                     return ticketId;
                 }

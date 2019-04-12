@@ -1503,6 +1503,8 @@
             <ComponentRef Id="English.Plugins.xlf" />
             <ComponentRef Id="Git.hub.dll" />
             <ComponentRef Id="RestSharp.dll" />
+            <ComponentRef Id="Atlassian.Jira.dll" />
+            <ComponentRef Id="Newtonsoft.Json.dll" />
             <ComponentRef Id="Microsoft.VisualStudio.Threading.dll" />
             <ComponentRef Id="Microsoft.VisualStudio.Validation.dll" />
             <ComponentRef Id="System.Runtime.InteropServices.RuntimeInformation.dll" />
