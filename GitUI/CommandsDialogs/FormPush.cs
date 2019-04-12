@@ -4,6 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using GitCommands;
@@ -976,6 +977,18 @@ namespace GitUI.CommandsDialogs
                 var localHeads = GetLocalBranches().ToList();
                 var remoteBranches = remoteHeads.ToHashSet(h => h.LocalName);
 
+                var currentCheckout = Module.GetCurrentCheckout();
+                var pushBranchLookup = new HashSet<string>();
+                if (currentCheckout != null)
+                {
+                    var currentBranches = Module.GetAllBranchesWhichContainGivenCommit(currentCheckout, true, false);
+
+                    foreach (var b in currentBranches)
+                    {
+                        pushBranchLookup.Add(b);
+                    }
+                }
+
                 // Add all the local branches.
                 foreach (var head in localHeads)
                 {
@@ -991,7 +1004,7 @@ namespace GitUI.CommandsDialogs
                     row[LocalColumnName] = head.Name;
                     row[RemoteColumnName] = remoteName;
                     row[NewColumnName] = isKnownAtRemote ? _no.Text : _yes.Text;
-                    row[PushColumnName] = isKnownAtRemote;
+                    row[PushColumnName] = currentCheckout != null ? pushBranchLookup.Contains(head.Name) : isKnownAtRemote;
 
                     _branchTable.Rows.Add(row);
                 }
