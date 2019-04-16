@@ -10,6 +10,7 @@ using Atlassian.Jira;
 using GitCommands;
 using GitCommands.Git.Tag;
 using GitUI.CommandsDialogs;
+using GitUI.Script;
 using GitUI.UserControls.RevisionGrid;
 using GitUIPluginInterfaces;
 
@@ -94,8 +95,34 @@ namespace GitUI
             commands.DoActionOnRepo(() =>
             {
                 var gitTagController = new GitTagController(commands);
-                return gitTagController.CreateTag(newTag, grid);
+                var success = gitTagController.CreateTag(newTag, grid);
+
+                if (success)
+                {
+                    PushTag(grid, commands.Module, tagName);
+                }
+
+                return success;
             });
+        }
+
+        private static void PushTag(RevisionGridControl grid, GitModule module, string tagName)
+        {
+            var remote = module.GetCurrentRemote();
+            if (string.IsNullOrEmpty(remote))
+            {
+                remote = "origin";
+            }
+
+            var pushCmd = GitCommandHelpers.PushTagCmd(remote, tagName, false);
+            using (var form = new FormRemoteProcess(module, pushCmd)
+            {
+                Remote = remote,
+                Text = $"Pushing tag to {remote}",
+            })
+            {
+                form.ShowDialog(grid);
+            }
         }
 
         private static void ViewReleaseNote(string ticketId)

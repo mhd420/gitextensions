@@ -43,6 +43,7 @@ namespace GitUI.CommandsDialogs
         private void Ok_Click(object sender, EventArgs e)
         {
             var newNote = textReleaseNote.Text;
+            var testNote = textNotes.Text;
 
             if (string.IsNullOrWhiteSpace(newNote))
             {
@@ -57,11 +58,11 @@ namespace GitUI.CommandsDialogs
                 var newIssue = jira.CreateIssue("RN");
                 newIssue.Type = "Task";
                 newIssue.Summary = newNote;
+                newIssue.Description = testNote;
 
                 newIssue.SaveChanges();
 
                 JiraTicket = newIssue.Key.Value;
-                DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
             {
