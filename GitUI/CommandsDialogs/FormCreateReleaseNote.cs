@@ -80,13 +80,11 @@ namespace GitUI.CommandsDialogs
                 var jira = Jira.CreateRestClient(AppSettings.AlastriJiraURL, AppSettings.AlastriJiraUsername, AppSettings.AlastriJiraPassword);
 
                 var summary = releaseNote.SplitLines().FirstOrDefault();
-                var description = $"Release Notes:\r\n{releaseNote}\r\n\r\nTesting Notes:\r\n{testNote}";
-
                 var newIssue = jira.CreateIssue("RN");
                 newIssue.Type = "Task";
                 newIssue.Summary = summary;
-                newIssue.Description = description;
-                newIssue["Release Notes"] = releaseNote;
+                newIssue.Description = releaseNote;
+                newIssue["Testing Notes"] = testNote;
 
                 newIssue.CustomFields.AddArray("Affects Projects", selectedProducts);
 
